@@ -8,6 +8,7 @@
     "reset-db": "rm -f data/app.db && node src/index.js --initOnly"
   },
   "dependencies": {
+    "@liveblocks/node": "^3.8.0",
     "bcryptjs": "^2.4.3",
     "better-sqlite3": "^9.4.0",
     "cors": "^2.8.5",
