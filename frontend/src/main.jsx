@@ -21,8 +21,10 @@ createRoot(document.getElementById('root')).render(
         <Route path="home" element={<Home/>} />
         <Route path="register" element={<Register/>} />
         <Route path="quiz" element={<Quiz/>} />
-        <Route path="dashboard" element={<Dashboard/>} />
+        {/* Keep MatchDetail as a separate page */}
         <Route path="match/:id" element={<MatchDetail/>} />
+        {/* Redirect any legacy dashboard links to the merged Home page */}
+        <Route path="dashboard" element={<Navigate to="/home" replace/>} />
       </Route>
     </Routes>
   </BrowserRouter>
