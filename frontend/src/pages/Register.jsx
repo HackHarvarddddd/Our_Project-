@@ -13,12 +13,26 @@ const navigate = useNavigate()
 async function onSubmit(e){
   e.preventDefault()
   setError('')
+  
+  // Basic validation
+  if (!name || !email || !password) {
+    setError('Please fill in all fields')
+    return
+  }
+  
+  if (password.length < 6) {
+    setError('Password must be at least 6 characters')
+    return
+  }
+  
   try {
     const { data } = await api.post('/auth/register', { name, email, password })
     localStorage.setItem('token', data.token)
     navigate('/quiz')
-  } catch (e) {
-    setError(e?.response?.data?.error || 'Registration failed')
+  } catch (err) {
+    console.error('Registration error:', err)
+    const errorMessage = err?.response?.data?.error || 'Registration failed'
+    setError(errorMessage)
   }
 }
 

@@ -14,12 +14,21 @@ const navigate = useNavigate()
 async function onSubmit(e) {
   e.preventDefault()
   setError('')
+  
+  // Basic validation
+  if (!email || !password) {
+    setError('Please fill in all fields')
+    return
+  }
+  
   try {
     const res = await api.post('/auth/login', { email, password })
     localStorage.setItem('token', res.data.token)
     navigate('/onboarding')  // <— go to Figma onboarding
   } catch (err) {
-    setError(err?.response?.data?.error || 'Login failed')
+    console.error('Login error:', err)
+    const errorMessage = err?.response?.data?.error || 'Login failed'
+    setError(errorMessage)
   }
 }
 

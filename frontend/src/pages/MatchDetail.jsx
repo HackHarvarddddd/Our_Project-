@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 import api from '../api'
 
 export default function MatchDetail(){
   const { id } = useParams()
+  const navigate = useNavigate()
   const [partner, setPartner] = useState(null)
   const [result, setResult] = useState(null)
 
@@ -36,6 +37,16 @@ export default function MatchDetail(){
     setResult(data)
   }
 
+  async function openCanvas(){
+    try {
+      // Create or get canvas room for this match
+      const { data } = await api.post('/canvas/room', { partnerUserId: id })
+      navigate(`/canvas/${data.roomId}`)
+    } catch (error) {
+      console.error('Failed to create canvas room:', error)
+    }
+  }
+
   return (
     <div className="card">
       <h2>Match Detail</h2>
@@ -49,6 +60,9 @@ export default function MatchDetail(){
         <div style={{marginTop:12}}>
           <p><strong>Scheduled:</strong> {new Date(result.scheduled.start_iso).toLocaleString()} to {new Date(result.scheduled.end_iso).toLocaleString()}</p>
           <p className="small">{result.scheduled.event.title} • {result.scheduled.event.location}</p>
+          <button onClick={openCanvas} className="canvas-btn" style={{marginTop: 12}}>
+            🎨 Open Shared Canvas
+          </button>
         </div>
       )}
     </div>

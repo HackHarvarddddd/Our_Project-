@@ -7,6 +7,7 @@ import Register from './pages/Register.jsx'
 import Quiz from './pages/Quiz.jsx'
 import Dashboard from './pages/Dashboard.jsx'
 import MatchDetail from './pages/MatchDetail.jsx'
+import SharedCanvas from './pages/SharedCanvas.jsx'
 import Onboarding from './pages/Onboarding.jsx'
 import Home from './pages/Home.jsx'
 import './styles.css'
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="quiz" element={<Quiz/>} />
         <Route path="dashboard" element={<Dashboard/>} />
         <Route path="match/:id" element={<MatchDetail/>} />
+        <Route path="canvas/:roomId" element={<SharedCanvas/>} />
       </Route>
     </Routes>
   </BrowserRouter>

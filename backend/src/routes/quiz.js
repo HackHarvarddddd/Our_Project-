@@ -24,6 +24,12 @@ router.post('/', authRequired, async (req, res) => {
   } = req.body || {};
 
   const database = db();
+  
+  // Verify user exists before proceeding
+  const user = database.prepare('SELECT id FROM users WHERE id=?').get(req.user.id);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found' });
+  }
 
   // Upsert quiz responses (user_id is PRIMARY KEY in quiz_responses)
   database

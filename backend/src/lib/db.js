@@ -20,6 +20,14 @@ export function db() {
     const dir = path.dirname(dbPath);
     if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true }); // ensure ./data exists
     _db = new Database(dbPath);
+    
+    // Test database connection
+    try {
+      _db.prepare('SELECT 1').get();
+    } catch (error) {
+      console.error('Database connection failed:', error);
+      throw new Error('Failed to connect to database');
+    }
   }
   return _db;
 }
@@ -85,6 +93,16 @@ export function initDb() {
       tags TEXT,          -- JSON array of tags/genres
       location TEXT,
       duration_min INTEGER DEFAULT 120
+    );
+
+    CREATE TABLE IF NOT EXISTS canvas_rooms (
+      id TEXT PRIMARY KEY,
+      room_id TEXT UNIQUE NOT NULL,
+      user_a TEXT NOT NULL,
+      user_b TEXT NOT NULL,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY(user_a) REFERENCES users(id),
+      FOREIGN KEY(user_b) REFERENCES users(id)
     );
   `);
 

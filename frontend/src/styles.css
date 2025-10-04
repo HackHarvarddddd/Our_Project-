@@ -118,5 +118,8 @@ button.secondary { background: rgba(255,255,255,.18); }
 .question { color: var(--text-inverse); margin: 12px 0; }
 .answer-button { display:block; width:100%; margin:8px 0; }
 
+/* Import canvas styles */
+@import './styles/Canvas.css';
+
 /* Make selects look nice inside cards on the gradient */
 select { appearance: none; background-image: linear-gradient(0deg,transparent,transparent); }
