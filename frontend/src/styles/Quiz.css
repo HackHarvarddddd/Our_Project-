@@ -1,150 +1,32 @@
-/* ================== Page Layout ================== */
-.page {
-height: 100vh;
-width: 100vw;
-display: flex;
-justify-content: center;
-align-items: center;
-background: linear-gradient(180deg, #8bc39a 0%, #f78a7e 100%);
-margin: 0;
-padding: 0;
-position: fixed; /* Ensures it covers the entire viewport */
-top: 0;
-left: 0;
-overflow: hidden; /* Prevents scrolling */
+/* Quiz aligns to global Harmoni theme */
+
+.page { min-height: calc(100vh - var(--nav-h)); display:flex; align-items:flex-start; justify-content:center; padding: 24px; }
+
+.card {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 24px;
+  width: 100%;
+  max-width: 900px;
+  color: var(--accent);
+  backdrop-filter: blur(6px);
 }
 
-.header {
-  font-size: 2rem;
-  font-weight: 700;
-  color: rgba(255, 255, 255, 0.95); /* Make text more visible */
-  width: 35rem;
-  margin-bottom: 4rem;
-  text-align: center; /* Center horizontally */
-}
-
-.question {
-  font-size: 1.7rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.95); /* Make text more visible */
-  margin-bottom: 1.6rem;
-  text-align: center; /* Center horizontally */
-}
+.header { margin: 0 0 14px; color: var(--text-inverse); text-align:left; }
+.question { color: var(--text-inverse); margin: 12px 0; font-weight: 700; }
 
 .answer-button {
-  display: block;
-  width: 100%;
-  max-width: 20rem;
-  padding: 0.75rem 1rem;
-  margin: 1rem auto;
-  border-radius: 0.75rem;
-  border: none;
-  background-color: rgba(255, 255, 255, 0.3);
-  color: #ffffff;
-  font-size: 1.4rem;
-  font-weight: 100;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+  display:block;
+  width:100%;
+  text-align:left;
+  margin:8px 0;
 }
 
-/* ================== Fonts ================== */
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@100;300;400;700;900&display=swap');
-
-body {
-  font-family: 'Montserrat', sans-serif;
-}
-
-/* ================== Horizontal Layout ================== */
-.horizontal-layout {
-  display: flex;
-  justify-content: space-between;
-  top: -10rem;
-  margin-bottom: 5rem;
-  gap: 5rem; /* Add spacing between columns */
-}
-
-.col {
-  flex: 1; /* Ensure equal width for all columns */
-  max-width: 25%; /* Optional: Limit the maximum width of each column */
-}
-
-.col h4 {
-  margin-bottom: 1rem;
-}
-
-.col label {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-.submit-row {
-  margin-top: 2rem;
-  text-align: center; /* Center the submit button */
-}
-
-.submit-row button {
-  padding: 0.75rem 1.5rem;
-  font-size: 1.2rem;
-  border-radius: 0.5rem;
-  background-color: #ffffff;
-  color: #333;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-}
-
-.submit-row button:hover {
-  background-color: #f0f0f0;
-}
-
-/* ================== Sections ================== */
-/* Interests Section */
-.interests-section {
-  flex: 1;
-  max-width: 25%;
-}
-
-.interest-item {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-/* Genres Section */
-.genres-section {
-  flex: 1;
-  max-width: 25%;
-}
-
-.genre-item {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-/* Availability Section */
-.availability-section {
-  flex: 1;
-  max-width: 25%;
-}
-
-.availability-item {
-  display: block;
-  margin-bottom: 0.5rem;
-}
-
-/* Location and Values Section */
-.location-values-section {
-  flex: 1;
-  max-width: 25%;
-}
-
-.location-values-section input {
-  display: block;
-  margin-bottom: 1rem;
-}
-
-/* Adjust spacing between sections */
-.row {
-  display: flex;
-  justify-content: space-between;
-  gap: 2rem;
+.interests-section, .genres-section, .values-section, .schedule-section, .location-section {
+  background: rgba(255,255,255,.18);
+  border: 1px solid rgba(255,255,255,.35);
+  border-radius: 14px;
+  padding: 12px;
 }

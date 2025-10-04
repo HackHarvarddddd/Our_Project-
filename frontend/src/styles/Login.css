@@ -1,160 +1,21 @@
-/* ================== Page Layout ================== */
-.page {
-height: 100vh;
-width: 100vw;
-display: flex;
-justify-content: center;
-align-items: center;
-background: linear-gradient(180deg, #8bc39a 0%, #f78a7e 100%);
-margin: 0;
-padding: 0;
-position: fixed; /* Ensures it covers the entire viewport */
-top: 0;
-left: 0;
-overflow: hidden; /* Prevents scrolling */
+/* Login/Register share the same look via global theme.
+   This file only adds tiny page-specific tweaks. */
+
+.authPage { min-height: calc(100vh - var(--nav-h)); display:flex; align-items:center; justify-content:center; padding: 24px; }
+
+.authCard {
+  background: var(--panel);
+  border: 1px solid var(--panel-border);
+  border-radius: 22px;
+  box-shadow: var(--shadow);
+  padding: 28px;
+  width: 420px;
+  max-width: 92vw;
+  color: var(--accent);
+  backdrop-filter: blur(6px);
 }
 
-
-
-
-/* ================== Login Card ================== */
-.card {
-width: 100%;
-max-width: 28rem; /* slightly narrower for balance */
-min-height: 65vh; /* expands vertically */
-padding: 3.5rem 3rem; /* Slightly increase padding */
-border-radius: 1.25rem;
-background-color: transparent !important; /* Remove background fill */
-box-shadow: none !important; /* Remove box shadow */
-display: flex;
-flex-direction: column;
-justify-content: center;
-align-items: center;
-}
-
-
-
-
-/* ================== Title ================== */
-.title {
-font-size: 2.25rem;
-font-weight: 700;
-color: rgba(255, 255, 255, 0.95); /* Make text more visible */
-text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); /* Add soft shadow */
-margin-bottom: 2rem;
-text-align: center; /* Center horizontally */
-}
-
-
-
-
-/* ================== Form Layout ================== */
-.form {
-display: flex;
-flex-direction: column;
-gap: 1.5rem;
-width: 100%;
-max-width: 22rem;
-align-items: center; /* Center inputs and button horizontally */
-}
-
-
-
-
-/* ================== Input Fields ================== */
-.input {
-height: 3.25rem;
-padding: 0 1rem;
-border-radius: 0.75rem;
-border: 1px solid rgba(255, 255, 255, 0.55); /* Soft border color */
-background: rgba(255, 255, 255, 0.4); /* Ensure translucent white */
-font-size: 1rem;
-color: #333;
-transition: border-color 0.2s, box-shadow 0.2s;
-width: 100%; /* Fill the form width */
-}
-
-
-
-
-.input::placeholder {
-color: rgba(0, 0, 0, 0.5);
-}
-
-
-
-
-.input:focus,
-.input:focus-visible {
-outline: none;
-border: 1.5px solid rgba(255, 255, 255, 0.85);
-box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.25);
-}
-
-
-
-
-/* ================== Button ================== */
-.button {
-height: 3.5rem;
-width: 9rem;
-border-radius: 0.75rem;
-font-weight: 600;
-font-size: 1.5rem;
-background: rgba(255, 255, 255, 0.5);
-margin-bottom: 1rem;
-border: none;
-cursor: pointer;
-transition: background 0.2s, box-shadow 0.2s, transform 0.1s;
-}
-
-
-
-
-.button:hover {
-background: rgba(255, 255, 255, 0.7);
-box-shadow: 0 0.75rem 1.25rem rgba(0, 0, 0, 0.25);
-}
-
-
-
-
-.button:active {
-transform: translateY(1px);
-box-shadow: 0 0.25rem 0.75rem rgba(0, 0, 0, 0.2);
-}
-
-
-
-
-/* ================== Helper Text ================== */
-.helperText {
-font-size: 1.25rem;
-color: rgba(255, 255, 255, 0.95); /* Make text readable over gradient */
-text-shadow: 0 2px 8px rgba(0, 0, 0, 0.35); /* Add soft shadow */
-margin-top: 1rem;
-text-align: center; /* Center horizontally */
-}
-
-
-
-
-.helperText a:hover {
-text-decoration: underline; /* Add underline on hover for links */
-}
-
-
-
-
-/* ================== Accessibility Utility ================== */
-.srOnly {
-position: absolute;
-width: 1px;
-height: 1px;
-padding: 0;
-margin: -1px;
-overflow: hidden;
-clip: rect(0, 0, 0, 0);
-white-space: nowrap;
-border: 0;
-}
+.authCard h2 { margin: 0 0 16px; text-align:center; color: var(--text-inverse); }
+.authCard form { display:flex; flex-direction:column; gap: 10px; }
+.authCard button { margin-top: 4px; }
+.authCard .small a { text-decoration: underline; }

@@ -8,17 +8,22 @@ export default function App() {
 
   return (
     <>
-      <nav>
-        <div className="brand"><Link to="/dashboard">🎵 Harmoni</Link></div>
+      <nav className="glass-nav">
+        <div className="brand"><Link to="/onboarding">Harmoni</Link></div>
         <div className="nav-links">
-          {token ? (<>
-            <Link to="/quiz">Quiz</Link>
-            <Link to="/dashboard">Matches</Link>
-            <a href="#" onClick={e=>{e.preventDefault();logout();}}>Logout</a>
-          </>) : (<>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>)}
+          {token ? (
+            <>
+              <Link to="/quiz">Quiz</Link>
+              <Link to="/home">Home</Link>
+              <Link to="/dashboard">Matches</Link>
+              <a href="#" onClick={e=>{e.preventDefault();logout();}}>Logout</a>
+            </>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </>
+          )}
         </div>
       </nav>
       <div className="container">
