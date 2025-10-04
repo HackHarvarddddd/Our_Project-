@@ -27,6 +27,7 @@ async function onSubmit(e){
 
 return (
   <div className="page">
+    
     <div className="card">
       <h2 className="title">Create account</h2>
       <form onSubmit={onSubmit} className="form">

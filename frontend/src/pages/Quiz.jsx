@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import api from '../api';
 import { useNavigate } from 'react-router-dom';
+import '../styles/Quiz.css';
 
 const QUESTIONS = [
 	{
@@ -31,16 +32,6 @@ const QUESTIONS = [
 			'A critic (I analyze and evaluate)',
 			'A curator (I collect and organize)',
 			'An appreciator (I enjoy)',
-		],
-	},
-	{
-		id: 4,
-		question: 'Do you have a preference over genre of music?',
-		options: [
-			'Classical, Jazz & Instrumental',
-			'R&B, Pop & Modern',
-			'Rock, Disco & Funk',
-			'Acoustic, Folk & Country',
 		],
 	},
 ];
@@ -114,13 +105,17 @@ export default function Quiz() {
 	}
 
 	return (
+    <div className="page">
+     <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet" />
+
 		<div className="card">
-			<h2>Artist Quiz</h2>
+			
 			{currentQuestionIndex < QUESTIONS.length ? (
 				<div>
-					<h4>{QUESTIONS[currentQuestionIndex].question}</h4>
+          <h2 className='header'>We are so glad you're here... <br /> And we wanna know you better!</h2>
+					<h4 className="question">{QUESTIONS[currentQuestionIndex].question}</h4>
 					{QUESTIONS[currentQuestionIndex].options.map((option) => (
-						<button key={option} onClick={() => handleAnswer(option)}>
+						<button className='answer-button' key={option} onClick={() => handleAnswer(option)}>
 							{option}
 						</button>
 					))}
@@ -128,10 +123,10 @@ export default function Quiz() {
 			) : (
 				<div>
 					<div className="row">
-						<div className="col">
+						<div className="interests-section">
 							<h4>Interests</h4>
 							{INTERESTS.map((i) => (
-								<label key={i} className="small">
+								<label key={i} className="interest-item">
 									<input
 										type="checkbox"
 										checked={interests.includes(i)}
@@ -141,10 +136,10 @@ export default function Quiz() {
 								</label>
 							))}
 						</div>
-						<div className="col">
+						<div className="genres-section">
 							<h4>Genres</h4>
 							{GENRES.map((i) => (
-								<label key={i} className="small">
+								<label key={i} className="genre-item">
 									<input
 										type="checkbox"
 										checked={genres.includes(i)}
@@ -154,10 +149,10 @@ export default function Quiz() {
 								</label>
 							))}
 						</div>
-						<div className="col">
+						<div className="availability-section">
 							<h4>Availability</h4>
 							{SLOTS.map((i) => (
-								<label key={i} className="small">
+								<label key={i} className="availability-item">
 									<input
 										type="checkbox"
 										checked={availability.includes(i)}
@@ -166,6 +161,8 @@ export default function Quiz() {
 									{i}
 								</label>
 							))}
+						</div>
+						<div className="location-values-section">
 							<h4>Location</h4>
 							<input
 								value={location}
@@ -185,7 +182,7 @@ export default function Quiz() {
 							/>
 						</div>
 					</div>
-					<div style={{ marginTop: 12 }}>
+					<div className="row submit-row">
 						<button onClick={submit}>Submit Quiz</button>
 						{msg && (
 							<span className="small" style={{ marginLeft: 12 }}>
@@ -196,6 +193,7 @@ export default function Quiz() {
 				</div>
 			)}
 		</div>
+    </div>
 	);
 }
 
