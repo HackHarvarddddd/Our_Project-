@@ -17,8 +17,8 @@ function MatchRoomButton({ match }) {
       console.log('Room creation response:', response.data);
       const { roomId, partnerName } = response.data;
       
-      // Navigate to the matched room (using test room for now)
-      navigate(`/test-room?roomId=${roomId}&partnerName=${encodeURIComponent(partnerName)}`);
+      // Navigate to the real-time matched room
+      navigate(`/matched-room?roomId=${roomId}&partnerName=${encodeURIComponent(partnerName)}`);
     } catch (error) {
       console.error('Room creation error:', error);
       setError(error.response?.data?.error || 'Failed to create room');
