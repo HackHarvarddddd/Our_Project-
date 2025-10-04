@@ -1,0 +1,53 @@
+/* Shared gradient */
+.full-bleed {
+  min-height: calc(100vh - 64px);
+}
+.harmoni-gradient {
+  background: linear-gradient(180deg,#caffe3 0%, #e58b7b 50%, #5ed1c8 100%);
+}
+/* Make section stretch full width even inside the centered .container wrapper */
+.harmoni-gradient{
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  width: 100vw;
+  padding-top: 48px;
+  padding-bottom: 48px;
+}
+.center-stack{
+  height: calc(100vh - 64px);
+  display:flex; align-items:center; justify-content:center; flex-direction:column;
+  text-align:center;
+}
+.title{ font-size:56px; font-weight:800; color:#fff; text-shadow:0 2px 12px rgba(0,0,0,.25) }
+.subtitle{ margin-top:8px; opacity:.9 }
+.cta{
+  margin-top:20px;
+  padding:10px 16px; border-radius:8px; border:0; cursor:pointer;
+  background: rgba(255,255,255,.25);
+  color: #fff;
+  backdrop-filter: blur(4px);
+}
+.home-wrap{ padding:48px 24px; max-width:900px; margin:0 auto; color:#0b4b45 }
+.home-header{ display:flex; justify-content:space-between; align-items:center; margin-bottom:24px }
+.home-nav .link{ margin-right:16px; color:#0b4b45; font-weight:600 }
+.home-main{ background:rgba(255,255,255,.0); padding:12px; border-radius:16px }
+.personality .greet{ margin-bottom:8px; color:#0b4b45 }
+.personality .desc{ max-width:680px; line-height:1.6; font-weight:600; color:#0f5f59 }
+.mood{ margin-top:24px; }
+.mood h3{ margin:8px 0; color:#0b4b45 }
+.dots{ display:flex; gap:14px; margin:10px 0 4px 0; }
+.dot{ width:14px; height:14px; border-radius:999px; display:inline-block; }
+.dot-green{ background:#208b3a }
+.dot-navy{ background:#0c3c78 }
+.dot-maroon{ background:#6b102a }
+.dot-black{ background:#222 }
+.dot-brown{ background:#9a3f00 }
+.dot-orange{ background:#f09747 }
+.dot-cocoa{ background:#5b3a30 }
+.dot-pink{ background:#fbd0d7 }
+.chips{ display:flex; flex-wrap:wrap; gap:10px; margin:8px 0 16px 0 }
+.chip{ background:rgba(255,255,255,.35); border:0; padding:8px 12px; border-radius:12px; cursor:pointer }
+.cta.find{ background:#cdebe7; color:#0b4b45; font-weight:700 }

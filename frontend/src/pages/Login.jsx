@@ -15,30 +15,25 @@ async function onSubmit(e) {
   e.preventDefault()
   setError('')
   try {
-    const { data } = await api.post('/auth/login', { email, password })
-    localStorage.setItem('token', data.token)
-    navigate('/dashboard')
-  } catch (e) {
-    setError(e?.response?.data?.error || 'Login failed')
+    const res = await api.post('/auth/login', { email, password })
+    localStorage.setItem('token', res.data.token)
+    navigate('/onboarding')  // <— go to Figma onboarding
+  } catch (err) {
+    setError(err?.response?.data?.error || 'Login failed')
   }
 }
 
-
-
-
 return (
-  <div className="page">
-    <div className="card">
-      <h2 className="title">Log in</h2>
-      <form onSubmit={onSubmit} className="form">
+  <div className="authPage">
+    <div className="authCard">
+      <h2>Log in</h2>
+      <form onSubmit={onSubmit}>
         <input
-          className="input"
           placeholder="Email"
           value={email}
           onChange={e => setEmail(e.target.value)}
         />
         <input
-          className="input"
           placeholder="Password"
           type="password"
           value={password}
