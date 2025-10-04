@@ -27,6 +27,28 @@ export default function Dashboard(){
     load()
   },[])
 
+  async function deleteInvite(id) {
+    try {
+      await api.delete(`/schedule/${id}`);
+      setSchedules(schedules.filter(s => s.id !== id));
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  async function refreshSchedules() {
+    try {
+      const schRes = await api.get('/schedule');
+      setSchedules(schRes.data.schedules || []);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    refreshSchedules();
+  }, []);
+
   if (!me) return null
 
   return (
@@ -58,7 +80,10 @@ export default function Dashboard(){
               <div className="small">{s.event.title} • {new Date(s.start_iso).toLocaleString()}</div>
             </div>
             <div className="col">{s.sentByMe ? <span className="chip">You invited</span> : <span className="chip">Invited you</span>}</div>
-            <div className="col"><Link to={`/match/${s.partner.id}`}><button>Open</button></Link></div>
+            <div className="col">
+              <Link to={`/match/${s.partner.id}`}><button>Open</button></Link>
+              <button onClick={() => deleteInvite(s.id)} style={{ marginLeft: 8 }}>Delete</button>
+            </div>
           </div>
         ))}
       </div>
