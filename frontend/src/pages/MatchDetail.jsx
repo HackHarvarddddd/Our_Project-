@@ -9,14 +9,27 @@ export default function MatchDetail(){
 
   useEffect(()=>{
     async function load(){
-      const me = await api.get('/auth/me')
       // Find this partner in the matches list to show name/summary
-      const m = await api.get('/matches')
-      const pt = m.data.matches.find(x=>x.user_id===id)
-      setPartner(pt || { user_id: id, name: 'Artist', summary: '' })
+      try {
+        const m = await api.get('/matches')
+        const pt = (m.data.matches || []).find(x=>String(x.user_id)===String(id))
+        setPartner(pt || { user_id: id, name: 'Artist', summary: '' })
+      } catch (_) {
+        setPartner({ user_id: id, name: 'Artist', summary: '' })
+      }
+
+      // If a schedule already exists between the two users, show it
+      try {
+        const existing = await api.get(`/schedule/with/${id}`)
+        if (existing.data?.scheduled) {
+          setResult(existing.data)
+        }
+      } catch (e) {
+        // ignore
+      }
     }
     load()
-  }, [id])
+  },[id])
 
   async function schedule(){
     const { data } = await api.post('/schedule', { partnerUserId: id })
@@ -29,13 +42,13 @@ export default function MatchDetail(){
       {partner && (<>
         <p><strong>{partner.name}</strong></p>
         <p className="small">{partner.summary}</p>
-        <button onClick={schedule}>Auto‑Schedule Outing</button>
+        <button onClick={schedule}>Auto-Schedule Outing</button>
       </>)}
-      {result?.scheduled === null && <p className="small" style={{marginTop:8}}>No overlapping availability found. Try editing your quiz availability.</p>}
+      {result?.scheduled === null && <p className="small" style={{marginTop:12}}>No overlapping availability found. Try editing your quiz availability.</p>}
       {result?.scheduled && (
         <div style={{marginTop:12}}>
-          <p><strong>Scheduled:</strong> {result.scheduled.event.title} — {new Date(result.scheduled.start_iso).toLocaleString()} to {new Date(result.scheduled.end_iso).toLocaleString()}</p>
-          <p className="small">{result.scheduled.event.location}</p>
+          <p><strong>Scheduled:</strong> {new Date(result.scheduled.start_iso).toLocaleString()} to {new Date(result.scheduled.end_iso).toLocaleString()}</p>
+          <p className="small">{result.scheduled.event.title} • {result.scheduled.event.location}</p>
         </div>
       )}
     </div>
