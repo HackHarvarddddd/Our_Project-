@@ -9,11 +9,11 @@ export default function App() {
   return (
     <>
       <nav>
-        <div className="brand"><Link to="/dashboard">🎨 ArtLink</Link></div>
+        <div className="brand"><Link to="/dashboard">🎵 Harmoni</Link></div>
         <div className="nav-links">
           {token ? (<>
             <Link to="/quiz">Quiz</Link>
-            <Link to="/dashboard">Dashboard</Link>
+            <Link to="/dashboard">Matches</Link>
             <a href="#" onClick={e=>{e.preventDefault();logout();}}>Logout</a>
           </>) : (<>
             <Link to="/login">Login</Link>
