@@ -102,10 +102,6 @@ router.post('/', authRequired, (req, res) => {
     overlap.length ? `Auto-scheduled using shared slot: ${overlap[0]}` : 'Auto-scheduled'
   );
 
-  // Adjust availability for both users
-  adjustAvailability(database, req.user.id, start.toISOString(), end.toISOString());
-  adjustAvailability(database, partnerUserId, start.toISOString(), end.toISOString());
-
   res.json({
     ok: true,
     scheduled: {
@@ -115,27 +111,6 @@ router.post('/', authRequired, (req, res) => {
       end_iso: end.toISOString(),
     }
   });
-});
-
-/**
- * DELETE /api/schedule/:id
- * Deletes a schedule by ID. Both participants can delete the invite.
- */
-router.delete('/:id', authRequired, (req, res) => {
-  const { id } = req.params;
-  const database = db();
-
-  // Ensure the user is a participant in the schedule
-  const schedule = database.prepare(
-    `SELECT * FROM schedules WHERE id=? AND (user_a=? OR user_b=?)`
-  ).get(id, req.user.id, req.user.id);
-
-  if (!schedule) return res.status(404).json({ error: 'Schedule not found or access denied' });
-
-  // Delete the schedule
-  database.prepare(`DELETE FROM schedules WHERE id=?`).run(id);
-
-  res.json({ ok: true });
 });
 
 /**
@@ -201,21 +176,5 @@ router.get('/with/:partnerId', authRequired, (req, res) => {
     }
   });
 });
-
-// Update availability after scheduling
-function adjustAvailability(database, userId, eventStart, eventEnd) {
-  const quiz = database.prepare('SELECT availability FROM quiz_responses WHERE user_id=?').get(userId);
-  const availability = JSON.parse(quiz?.availability || '[]');
-  const updatedAvailability = availability.filter(slot => {
-    const [day, time] = slot.split(' ');
-    const slotStart = new Date(`${day}T${time}:00`);
-    const slotEnd = new Date(slotStart.getTime() + 60 * 60 * 1000); // Assume 1-hour slots
-    return slotEnd <= new Date(eventStart) || slotStart >= new Date(eventEnd);
-  });
-  database.prepare('UPDATE quiz_responses SET availability=? WHERE user_id=?').run(
-    JSON.stringify(updatedAvailability),
-    userId
-  );
-}
 
 export default router;
