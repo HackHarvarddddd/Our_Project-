@@ -9,6 +9,7 @@ const router = Router();
  * Return top-N similar users by *whitened* cosine similarity over profile vectors.
  * - Excludes the current user
  * - Only includes users who have a stored profile vector
+ * - Scores are scaled to [0, 1] so the UI can show 0%–100%.
  * Query: ?limit=10
  */
 router.get('/', authRequired, (req, res) => {
@@ -44,22 +45,23 @@ router.get('/', authRequired, (req, res) => {
   });
 
   // Determine a common dimensionality
-  const dims = [myVec.length, ...others.map(o => o.v.length)].filter(x=>x>0);
+  const dims = [myVec.length, ...others.map(o => o.v.length)].filter(x => x > 0);
   const L = dims.length ? Math.min(...dims) : 0;
   if (!L) return res.json({ matches: [] });
 
   // Compute population mean/std (anti-crowding) on [me + others]
   const { mean, std } = meanStd([myVec, ...others.map(o => o.v)], L);
 
-  // Z-score then cosine
+  // Z-score then cosine, then scale from [-1,1] -> [0,1]
   const myZ = zscore(myVec, mean, std);
   const scored = others
     .map(o => {
       const z = zscore(o.v, mean, std);
-      const score = cosineSim(myZ, z);
-      return { user_id: o.user_id, name: o.name, summary: o.summary, score };
+      const raw = cosineSim(myZ, z);
+      const scaled = (raw + 1) / 2; // map to [0,1] so UI shows 0%–100%
+      return { user_id: o.user_id, name: o.name, summary: o.summary, score: scaled };
     })
-    .sort((a,b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score)
     .slice(0, limit);
 
   res.json({ matches: scored, dims: L });
