@@ -53,6 +53,10 @@ export default function Home(){
     }
   }
 
+  function goToRoom(mood){
+    navigate(`/room?mood=${encodeURIComponent(mood)}`)
+  }
+
   const profile = me?.profile || {}
   const name = me?.user?.name || ''
   const summary = profile?.summary || 'Your Harmoni personality will appear here after you finish the quiz.'
@@ -89,7 +93,7 @@ export default function Home(){
             <h3 style={{marginTop:16}}>Pick Your Mood(s)</h3>
             <div className="chips">
               {['Calm','Restless','Nostalgic','Lonely','Excited','Powerful','Upset','Stressed','Positive','Other'].map(x=>(
-                <button key={x} className="chip" type="button">{x}</button>
+                <button key={x} className="chip" type="button" onClick={() => goToRoom(x)}>{x}</button>
               ))}
             </div>
 
@@ -142,3 +146,4 @@ export default function Home(){
     </div>
   )
 }
+
