@@ -15,13 +15,13 @@ export default function App() {
             <>
               <Link to="/quiz">Quiz</Link>
               <Link to="/home">Home</Link>
-              <Link to="/dashboard">Matches</Link>
               <a href="#" onClick={e=>{e.preventDefault();logout();}}>Logout</a>
             </>
           ) : (
             <>
               <Link to="/login">Login</Link>
               <Link to="/register">Register</Link>
+              <Link to="/room">Room</Link>
             </>
           )}
         </div>
