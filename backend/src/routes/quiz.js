@@ -20,6 +20,7 @@ router.post('/', authRequired, async (req, res) => {
     availability = [],
     location = '',
     values = [], // JS uses "values"; DB column is "prefs"
+    responses = [], // New parameter
   } = req.body || {};
 
   const database = db();
@@ -48,7 +49,7 @@ router.post('/', authRequired, async (req, res) => {
     );
 
   // Build an answers object to feed to the analyzer
-  const answers = { interests, genres, availability, location, values };
+  const answers = { interests, genres, availability, location, values, responses }; // Include responses
 
   // Produce personality profile (Big Five + summary) via OpenAI with fallback
   const analysis = await analyzeQuiz(answers);

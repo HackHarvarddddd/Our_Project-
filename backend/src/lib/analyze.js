@@ -1,5 +1,7 @@
 import crypto from 'crypto';
 
+// TODO: update to also include unique quiz answers
+
 // Order matters; keep this stable across users/runs.
 const TRAIT_KEYS = [
   'openness',
@@ -46,13 +48,14 @@ async function callOpenAIForProfile(answers) {
   }
 
   // Keep the prompt grounded in the actual quiz structure.
-  const { interests = [], genres = [], values = [], availability = [], location = '' } = answers || {};
+  const { interests = [], genres = [], values = [], availability = [], location = '', responses = [] } = answers || {};
   const userPayload = {
     interests,
     genres,
     values,
     availability,
     location,
+    responses, // Include responses
   };
 
   // We request strict JSON with the exact schema we need.
@@ -65,8 +68,9 @@ async function callOpenAIForProfile(answers) {
         role: 'system',
         content:
           'You are a concise personality profiler for an arts-matchmaking platform. ' +
-          'Given a short quiz (interests, music genres, values, availability, location), ' +
+          'Given a short quiz (interests, music genres, values, availability, location, and specific question responses), ' +
           'return Big Five trait scores in [0,1] and a 1–2 sentence summary. ' +
+          'Incorporate the responses into the summary for a more personalized profile. ' +
           'Reply as pure JSON only.',
       },
       {
