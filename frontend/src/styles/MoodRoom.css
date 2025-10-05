@@ -1,0 +1,181 @@
+/* MoodRoom – page-scoped styles (imported only by MoodRoom.jsx) */
+
+.mood-room {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+/* Small breadcrumb header */
+.crumb-title {
+  margin: 0 0 4px 0;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--text-inverse, #fff);
+}
+.crumb-sub { opacity: .9; }
+.pill {
+  display: inline-block;
+  padding: 2px 10px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+  border: 1px solid rgba(255,255,255,.45);
+  box-shadow: var(--shadow, 0 10px 30px rgba(0,0,0,.12));
+}
+
+/* Frosted card like the second screenshot */
+.glass-card {
+  margin-top: 14px;
+  background: rgba(255,255,255,0.12);
+  border: 1px solid rgba(255,255,255,0.25);
+  border-radius: 20px;
+  backdrop-filter: blur(14px) saturate(120%);
+  box-shadow: var(--shadow, 0 18px 60px rgba(0,0,0,.18));
+  padding: 28px;
+}
+
+/* Two-column layout inside the card */
+.room-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 28px;
+  align-items: center;
+}
+
+/* LEFT column (stage) */
+.stage .room-title {
+  margin: 0;
+  font-size: 26px;
+  color: var(--text-inverse, #fff);
+}
+.stage .mood { color: #fff; text-shadow: 0 2px 10px rgba(0,0,0,.2); }
+.subtitle { margin: 6px 0 18px; opacity: .9; }
+
+/* now playing row */
+.now-playing {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 18px;
+}
+.play-btn {
+  appearance: none;
+  padding: 10px 16px;
+  border-radius: 999px;
+  border: 2px solid rgba(255,255,255,.7);
+  background: transparent;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+}
+.play-btn:hover { background: rgba(255,255,255,.18); }
+.play-btn.is-playing { background: rgba(255,255,255,.28); }
+.np-label { font-size: 12px; opacity: .9; }
+.np-song { font-weight: 600; }
+.np-artist { opacity: .9; }
+
+/* Equalizer visual */
+.equalizer {
+  --bar-w: 8px;
+  --bar-gap: 8px;
+  --bars: 17;
+  position: relative;
+  height: 140px;
+  display: flex;
+  align-items: flex-end;
+  gap: var(--bar-gap);
+  margin: 6px 0 16px;
+}
+.equalizer span {
+  width: var(--bar-w);
+  height: 24px; /* resting height */
+  background: rgba(255,255,255,.85);
+  border-radius: 6px;
+  transform-origin: 50% 100%;
+  opacity: .95;
+}
+.equalizer.animate span {
+  animation: barDance 1.2s infinite ease-in-out;
+  animation-delay: calc(var(--i) * 40ms);
+}
+@keyframes barDance {
+  0%, 100% { height: 22px; opacity: .9; }
+  40% { height: 90px; opacity: 1; }
+  60% { height: 50px; }
+}
+
+/* stage cta row */
+.stage-cta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 10px;
+}
+.tiny-hint { font-size: 12px; opacity: .85; }
+.leave-btn {
+  appearance: none;
+  border: 0;
+  padding: 10px 14px;
+  border-radius: 10px;
+  background: rgba(255,255,255,.25);
+  color: #173a35;
+  font-weight: 700;
+  cursor: pointer;
+}
+.leave-btn:hover { background: rgba(255,255,255,.35); }
+
+/* RIGHT column (participants) */
+.participants .part-head h3 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: var(--text-inverse, #fff);
+}
+.participants .count { opacity: .9; font-weight: 500; }
+.people-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 12px;
+}
+.person {
+  display: grid;
+  grid-template-columns: 40px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 12px;
+  border-radius: 14px;
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.25);
+}
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.85);
+  color: #173a35;
+  font-weight: 800;
+  display: grid;
+  place-items: center;
+}
+.meta .name { font-weight: 700; }
+.meta .bio { font-size: 13px; opacity: .9; }
+.invite {
+  appearance: none;
+  border: 0;
+  padding: 8px 12px;
+  border-radius: 999px;
+  background: rgba(255,255,255,.22);
+  color: #173a35;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.invite:hover { background: rgba(255,255,255,.34); }
+
+/* Responsive */
+@media (max-width: 920px) {
+  .room-grid { grid-template-columns: 1fr; }
+  .equalizer { height: 120px; }
+}

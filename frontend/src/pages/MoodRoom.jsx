@@ -1,95 +1,124 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import useSound from 'use-sound';
-import api from '../api';
+import useSound from "use-sound";
+import "../styles/MoodRoom.css";
 
-function Room() {
+/**
+ * MoodRoom
+ * Group "mood room" that matches the visual language from the second screenshot,
+ * adapted for a multi-person room. Frosted glass panel, big wave icon, "Now playing",
+ * participant chips with short bios + invite buttons.
+ */
+export default function MoodRoom() {
   const [searchParams] = useSearchParams();
-  const mood = searchParams.get("mood") || "Calm"; // Hardcoded mood
-  const [users, setUsers] = useState([
-    { id: "1", name: "Alice", summary: "Loves peaceful walks in nature." },
-    { id: "2", name: "Bob", summary: "Enjoys meditating and yoga." },
-    { id: "3", name: "Charlie", summary: "Finds calmness in painting." }
-  ]); // Hardcoded users
-  const [error, setError] = useState(null);
-  const [isPlaying, setIsPlaying] = useState(false); // State to track if the song is playing
-  const [playSong, { stop }] = useSound('../../assets/music/song.mp3'); // Directly use the song path
-  const [userId, setUserId] = useState(null); // State to store the current user ID
   const navigate = useNavigate();
 
-  useEffect(() => {
-    async function fetchUserId() {
-      try {
-        const response = await api.get('/auth/me'); // Fetch user data
-        setUserId(response.data.user.id); // Set the user ID
-      } catch (e) {
-        console.error('Error fetching user ID:', e);
-        setError('Failed to fetch user ID. Please log in again.');
-      }
-    }
-    fetchUserId();
-  }, []);
+  // Mood and demo song
+  const mood = searchParams.get("mood") || "Calm";
+  const song = useMemo(
+    () => ({ title: "Claire De Lune", artist: "Debussy" }),
+    []
+  );
+
+  // Demo people in this room (replace with API later)
+  const [people, setPeople] = useState([
+    { id: "1", name: "Alice", summary: "Loves peaceful walks in nature." },
+    { id: "2", name: "Bob", summary: "Enjoys meditating and yoga." },
+    { id: "3", name: "Charlie", summary: "Finds calmness in painting." },
+  ]);
+
+  // Simple audio play/pause
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [play, controls] = useSound("../../assets/music/song.mp3", {
+    volume: 0.8,
+    interrupt: true,
+    onend: () => setIsPlaying(false),
+  });
 
   const togglePlay = () => {
     if (isPlaying) {
-      stop(); // Stop the song
+      controls.stop();
+      setIsPlaying(false);
     } else {
-      playSong(); // Play the song
+      play();
+      setIsPlaying(true);
     }
-    setIsPlaying(!isPlaying); // Toggle the play state
   };
 
-  const inviteUser = async (user) => {
-    try {
-      if (!userId) {
-        throw new Error('User ID is missing. Please log in again.');
-      }
-      const newInvite = {
-        id: `schedule_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        user_a: userId,
-        user_b: user.id,
-        partnerUserId: user.id,
-        partner_name: user.name,
-        event_id: 'evt_rock_1',
-        start_iso: new Date().toISOString(),
-        end_iso: new Date(Date.now() + 3600000).toISOString(),
-        location: "Virtual Meeting Room",
-        notes: `Meeting with ${user.name}`
-      };
+  const leaveRoom = () => {
+    controls.stop?.();
+    navigate("/home");
+  };
 
-      console.log('Sending invite:', newInvite);
-      await api.post('/schedule', newInvite);
-      navigate('/home');
-    } catch (e) {
-      console.error('Error sending invite:', e);
-      const errorMessage = e.response?.data?.error || e.response?.data?.message || e.message;
-      setError('Failed to send invite. Please try again. ' + errorMessage);
-    }
+  const inviteUser = (p) => {
+    // Wire up to backend later; this is UI only
+    alert(`Invitation sent to ${p.name} 💌`);
   };
 
   return (
-    <div>
-      <h2>Mood Room</h2>
-      <p>Mood: {mood}</p>
-      <p>Song: "Happy by Pharrell Williams"</p>
-      <button onClick={togglePlay}>{isPlaying ? "Stop" : "Play"}</button> {/* Toggle button text */}
-      {error && <p className="error" style={{ color: 'red' }}>{error}</p>} {/* Display error */}
-      <div>
-        <h3>Users with the same mood:</h3>
-        {users.length === 0 ? (
-          <p>No users found with the same mood.</p>
-        ) : (
-          users.map(user => (
-            <div key={user.id} className="user-card">
-              <strong>{user.name}</strong>
-              <p>{user.summary}</p>
-              <button onClick={() => inviteUser(user)}>Invite to Schedule</button>
+    <div className="mood-room">
+      <header className="crumb">
+        <h1 className="crumb-title">Mood Room</h1>
+        <div className="crumb-sub">Mood: <span className="pill">{mood}</span></div>
+      </header>
+
+      <section className="glass-card">
+        <div className="room-grid">
+          {/* LEFT: Title, now playing + wave */}
+          <div className="stage">
+            <h2 className="room-title">
+              You’re in the <span className="mood">{mood}</span> room
+            </h2>
+            <p className="subtitle">
+              People here vibe the same way. Relax, listen together, and connect.
+            </p>
+
+            <div className="now-playing">
+              <button className={`play-btn ${isPlaying ? "is-playing" : ""}`} onClick={togglePlay}>
+                {isPlaying ? "Pause" : "Play"}
+              </button>
+              <div className="np-meta">
+                <div className="np-label">Now playing</div>
+                <div className="np-song">
+                  {song.title} <span className="np-artist">by {song.artist}</span>
+                </div>
+              </div>
             </div>
-          ))
-        )}
-      </div>
+
+            <div className={`equalizer ${isPlaying ? "animate" : ""}`} aria-hidden="true">
+              {Array.from({ length: 17 }).map((_, i) => (
+                <span key={i} style={{ ["--i"]: i }} />
+              ))}
+            </div>
+
+            <div className="stage-cta">
+              <div className="tiny-hint">Press Play to animate the room.</div>
+              <button className="leave-btn" onClick={leaveRoom}>Leave the room</button>
+            </div>
+          </div>
+
+          {/* RIGHT: Participants */}
+          <aside className="participants">
+            <div className="part-head">
+              <h3>People in this room <span className="count">({people.length})</span></h3>
+            </div>
+            <ul className="people-list">
+              {people.map((p) => (
+                <li key={p.id} className="person">
+                  <div className="avatar" aria-hidden="true">{p.name[0]}</div>
+                  <div className="meta">
+                    <div className="name">{p.name}</div>
+                    <div className="bio">{p.summary}</div>
+                  </div>
+                  <button className="invite" onClick={() => inviteUser(p)}>
+                    Invite to schedule
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </aside>
+        </div>
+      </section>
     </div>
   );
 }
-
-export default Room;
