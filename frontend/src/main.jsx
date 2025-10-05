@@ -11,6 +11,7 @@ import Onboarding from './pages/Onboarding.jsx'
 import Home from './pages/Home.jsx'
 import MatchedRoom from './pages/MatchedRoom.jsx'
 import TestRoom from './pages/TestRoom.jsx'
+import MoodRoom from './pages/MoodRoom.jsx'
 import './styles.css'
 
 createRoot(document.getElementById('root')).render(
@@ -29,6 +30,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="matched-room" element={<MatchedRoom/>} />
         {/* Test room for debugging */}
         <Route path="test-room" element={<TestRoom/>} />
+        {/* Mood room for relaxation */}
+        <Route path="mood-room" element={<MoodRoom/>} />
         {/* Redirect any legacy dashboard links to the merged Home page */}
         <Route path="dashboard" element={<Navigate to="/home" replace/>} />
       </Route>

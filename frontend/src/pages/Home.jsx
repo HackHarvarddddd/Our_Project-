@@ -7,6 +7,8 @@ export default function Home(){
   const [me, setMe] = useState(null)
   const [matches, setMatches] = useState([])
   const [schedules, setSchedules] = useState([])
+  const [selectedMood, setSelectedMood] = useState(null)
+  const [error, setError] = useState(null)
   const navigate = useNavigate()
 
   useEffect(()=>{
@@ -29,10 +31,16 @@ export default function Home(){
     load()
   },[])
 
-  function findHarmoni(){
-    // Smooth scroll to the matches section on the same page
-    const el = document.getElementById('matches')
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' })
+  async function updateMood(mood) {
+    setSelectedMood(mood)
+  }
+
+  function findHarmoni() {
+    if (!selectedMood) {
+      setError('Please select a mood before proceeding.')
+      return
+    }
+    navigate(`/mood-room?mood=${encodeURIComponent(selectedMood)}`)
   }
 
   async function deleteInvite(id) {
@@ -54,7 +62,7 @@ export default function Home(){
   }
 
   function goToRoom(mood){
-    navigate(`/room?mood=${encodeURIComponent(mood)}`)
+    navigate(`/mood-room?mood=${encodeURIComponent(mood)}`)
   }
 
   const profile = me?.profile || {}
@@ -92,11 +100,18 @@ export default function Home(){
 
             <h3 style={{marginTop:16}}>Pick Your Mood(s)</h3>
             <div className="chips">
-              {['Calm','Restless','Nostalgic','Lonely','Excited','Powerful','Upset','Stressed','Positive','Other'].map(x=>(
-                <button key={x} className="chip" type="button" onClick={() => goToRoom(x)}>{x}</button>
+              {['Calm', 'Restless', 'Nostalgic', 'Lonely', 'Excited', 'Powerful', 'Upset', 'Stressed', 'Positive', 'Other'].map(x => (
+                <button
+                  key={x}
+                  className={`chip ${selectedMood === x ? 'selected' : ''}`}
+                  type="button"
+                  onClick={() => updateMood("Calm")} // Call updateMood on click
+                >
+                  {x}
+                </button>
               ))}
             </div>
-
+            {error && <p className="error" style={{ color: 'red' }}>{error}</p>} {/* Display error */}
             <button className="cta find" onClick={findHarmoni}>Find Your Harmoni</button>
           </section>
 
@@ -109,7 +124,7 @@ export default function Home(){
             {schedules.map(s => (
               <div key={s.id} className="row" style={{alignItems:'center'}}>
                 <div className="col">
-                  <div><strong>{s.partner?.name || 'Partner'}</strong></div>
+                  <div><strong>{s.partner?.name || s.partner_name || 'Unknown'}</strong></div> {/* Adjusted to show the actual name */}
                   <div className="small">{new Date(s.start_iso).toLocaleString()} – {new Date(s.end_iso).toLocaleString()}</div>
                 </div>
                 <div className="col">
