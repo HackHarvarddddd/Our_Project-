@@ -1,66 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { MOOD_SONGS } from '../../../backend/src/lib/moods';
+import React, { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { MOOD_SONGS } from "../data/moods";
+import { get } from "../../../backend/src/routes/mood";
+import useSound from 'use-sound';
+import song from '../../assets/music/song.mp3';
 
 
-function getRandomSong(mood) {
-  const songs = MOOD_SONGS[mood] || [];
-  if (songs.length === 0) return null;
-  const randomIndex = Math.floor(Math.random() * songs.length);
-  return songs[randomIndex];
+// function getRandomSong(mood) {
+//   const songs = MOOD_SONGS[mood?.toLowerCase()] || []; // Ensure mood is case-insensitive
+//   if (songs.length === 0) return null;
+//   const randomIndex = Math.floor(Math.random() * songs.length);
+//   return songs[randomIndex];
+// }
+
+function getSongPath() {
+  return '../assets/music/song.mp3'; 
 }
-
-async function getPreviewUrl({ artist, title }, country = "US") {
-  try {
-    const term = encodeURIComponent(`${artist} ${title}`);
-    const url = `/api/itunes?term=${term}&country=${country}`;
-    const res = await fetch(url);
-    const data = await res.json();
-
-    // Pick the best match with a preview URL
-    const best = data.results.find(r => r.previewUrl);
-    return best?.previewUrl || null;
-  } catch (error) {
-    console.error("Error fetching preview URL:", error);
-    return null;
-  }
-}
-
 function Room() {
   const [searchParams] = useSearchParams();
-  const mood = searchParams.get('mood');
+  const mood = searchParams.get("mood") || "happy";
   const [song, setSong] = useState(null);
-  const [previewUrl, setPreviewUrl] = useState(null);
+  const [path, setPath] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [playSong, { stop }] = useSound(song || ''); // Initialize useSound with the song path
 
   useEffect(() => {
+    setPath(null);
     setSong(getRandomSong(mood));
   }, [mood]);
 
-  const handlePlay = async () => {
-    if (!song) {
-      alert("No song to play.");
-      return;
+  const handlePlay = () => {
+    if (song) {
+      playSong(); // Play the song
     }
-
-    const url = await getPreviewUrl(song);
-    if (!url) {
-      alert("No preview found for that song.");
-      return;
-    }
-
-    setPreviewUrl(url);
   };
 
   return (
     <div>
       <h2>Room</h2>
       <p>Mood: {mood}</p>
+
       {song ? (
         <div>
-          <p>{song.artist} — {song.title}</p>
-          <button onClick={handlePlay}>Play</button>
-          {previewUrl && (
-            <audio src={previewUrl} controls autoPlay />
+          <p>
+            {song.artist} — {song.title}
+          </p>
+          <button onClick={handlePlay} disabled={loading}>
+            Play
+          </button>
+
+          {preview?.url && (
+            <>
+              <p style={{ fontSize: 12, opacity: 0.7 }}>
+                Preview provider: {"Spotify"}
+              </p>
+            </>
           )}
         </div>
       ) : (
