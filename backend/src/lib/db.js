@@ -35,6 +35,7 @@ export function initDb() {
       email TEXT UNIQUE NOT NULL,
       password_hash TEXT NOT NULL,
       is_artist INTEGER DEFAULT 1,
+      mood TEXT, -- Add mood column to store the user's current mood
       created_at TEXT DEFAULT (datetime('now'))
     );
 
@@ -117,4 +118,23 @@ export function initDb() {
     ));
     tx(seed);
   }
+
+  // Insert hardcoded users if they don't already exist
+  const existingUsers = database.prepare('SELECT COUNT(*) as count FROM users').get().count;
+  if (existingUsers === 0) {
+    const users = [
+      { id: '1', name: 'Alice', email: 'alice@example.com', password_hash: 'hash1', mood: 'Calm' },
+      { id: '2', name: 'Bob', email: 'bob@example.com', password_hash: 'hash2', mood: 'Calm' },
+      { id: '3', name: 'Charlie', email: 'charlie@example.com', password_hash: 'hash3', mood: 'Calm' }
+    ];
+    const insertUser = database.prepare(`
+      INSERT INTO users (id, name, email, password_hash, mood)
+      VALUES (@id, @name, @email, @password_hash, @mood)
+    `);
+    const userTransaction = database.transaction((users) => {
+      users.forEach((user) => insertUser.run(user));
+    });
+    userTransaction(users);
+  }
+}
 }

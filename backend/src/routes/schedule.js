@@ -177,4 +177,64 @@ router.get('/with/:partnerId', authRequired, (req, res) => {
   });
 });
 
+/**
+ * POST /api/schedule/invite
+ * Body: { user_a: string, user_b: string, start_iso: string, end_iso: string, location: string, notes?: string }
+ * Creates a new schedule (invite) between two users.
+ */
+router.post('/invite', authRequired, (req, res) => {
+  const { user_a, user_b, start_iso, end_iso, location, notes } = req.body;
+
+  console.log('Received request to create schedule:', req.body); // Debugging line
+
+  if (!user_a || !user_b || !start_iso || !end_iso || !location) {
+    console.error('Missing required fields:', req.body); // Debugging line
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const stmt = db().prepare(`
+      INSERT INTO schedules (id, user_a, user_b, start_iso, end_iso, location, notes)
+      VALUES (?, ?, ?, ?, ?, ?, ?)
+    `);
+    const id = `sch_${Date.now()}`; // Generate a unique ID
+    stmt.run(id, user_a, user_b, start_iso, end_iso, location, notes);
+
+    res.status(201).json({ success: true, id });
+  } catch (error) {
+    console.error('Error creating schedule:', error);
+    res.status(500).json({ error: 'Failed to create schedule' });
+  }
+});
+
+/**
+ * POST /api/schedule
+ * Body: { user_a: string, user_b: string, start_iso: string, end_iso: string, location: string, notes?: string }
+ * Creates a new schedule (invite) between two users.
+ */
+router.post('/schedule', (req, res) => {
+  const { user_a, user_b, partner_name, start_iso, end_iso, location, notes } = req.body;
+
+  console.log('Received request to create schedule:', req.body); // Debugging line
+
+  if (!user_a || !user_b || !start_iso || !end_iso || !location || !partner_name) {
+    console.error('Missing required fields:', req.body); // Debugging line
+    return res.status(400).json({ error: 'Missing required fields' });
+  }
+
+  try {
+    const stmt = db().prepare(`
+      INSERT INTO schedules (id, user_a, user_b, start_iso, end_iso, location, notes, partner_name)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+    `);
+    const id = `sch_${Date.now()}`;
+    stmt.run(id, user_a, user_b, start_iso, end_iso, location, notes, partner_name);
+
+    res.status(201).json({ success: true, id });
+  } catch (error) {
+    console.error('Error creating schedule:', error);
+    res.status(500).json({ error: 'Failed to create schedule' });
+  }
+});
+
 export default router;
