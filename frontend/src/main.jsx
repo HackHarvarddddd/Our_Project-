@@ -9,7 +9,8 @@ import Dashboard from './pages/Dashboard.jsx'
 import MatchDetail from './pages/MatchDetail.jsx'
 import Onboarding from './pages/Onboarding.jsx'
 import Home from './pages/Home.jsx'
-import Room from './pages/Room.jsx'
+import MatchedRoom from './pages/MatchedRoom.jsx'
+import TestRoom from './pages/TestRoom.jsx'
 import './styles.css'
 
 createRoot(document.getElementById('root')).render(
@@ -22,9 +23,12 @@ createRoot(document.getElementById('root')).render(
         <Route path="home" element={<Home/>} />
         <Route path="register" element={<Register/>} />
         <Route path="quiz" element={<Quiz/>} />
-        <Route path="room" element={<Room />} />
         {/* Keep MatchDetail as a separate page */}
         <Route path="match/:id" element={<MatchDetail/>} />
+        {/* Matched room for collaborative canvas */}
+        <Route path="matched-room" element={<MatchedRoom/>} />
+        {/* Test room for debugging */}
+        <Route path="test-room" element={<TestRoom/>} />
         {/* Redirect any legacy dashboard links to the merged Home page */}
         <Route path="dashboard" element={<Navigate to="/home" replace/>} />
       </Route>

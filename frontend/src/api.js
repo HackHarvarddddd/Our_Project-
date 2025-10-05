@@ -7,4 +7,11 @@ api.interceptors.request.use(cfg => {
   return cfg;
 });
 
+// Room API functions
+export const roomAPI = {
+  createRoom: (partnerUserId) => api.post('/rooms/create', { partnerUserId }),
+  getRooms: () => api.get('/rooms'),
+  getRoom: (roomId) => api.get(`/rooms/${roomId}`)
+};
+
 export default api;

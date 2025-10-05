@@ -86,6 +86,15 @@ export function initDb() {
       location TEXT,
       duration_min INTEGER DEFAULT 120
     );
+
+    CREATE TABLE IF NOT EXISTS rooms (
+      id TEXT PRIMARY KEY,
+      user_a TEXT,
+      user_b TEXT,
+      created_at TEXT DEFAULT (datetime('now')),
+      FOREIGN KEY(user_a) REFERENCES users(id),
+      FOREIGN KEY(user_b) REFERENCES users(id)
+    );
   `);
 
   // Seed events if empty

@@ -7,6 +7,8 @@ import quizRoutes from './routes/quiz.js';
 import matchRoutes from './routes/match.js';
 import eventRoutes from './routes/events.js';
 import scheduleRoutes from './routes/schedule.js';
+import liveblocksRoutes from './routes/liveblocks.js';
+import roomRoutes from './routes/rooms.js';
 
 dotenv.config();
 const app = express();
@@ -18,6 +20,8 @@ app.use('/api/quiz', quizRoutes);
 app.use('/api/matches', matchRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/schedule', scheduleRoutes);
+app.use('/api/liveblocks', liveblocksRoutes);
+app.use('/api/rooms', roomRoutes);
 
 const PORT = process.env.PORT || 4000;
 

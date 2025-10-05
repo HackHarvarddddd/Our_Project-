@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import api from '../api'
+import MatchRoomButton from '../components/MatchRoomButton.jsx'
 
 export default function MatchDetail(){
   const { id } = useParams()
@@ -42,6 +43,9 @@ export default function MatchDetail(){
       {partner && (<>
         <p><strong>{partner.name}</strong></p>
         <p className="small">{partner.summary}</p>
+        <div style={{marginBottom: '12px'}}>
+          <MatchRoomButton match={partner} />
+        </div>
         <button onClick={schedule}>Auto-Schedule Outing</button>
       </>)}
       {result?.scheduled === null && <p className="small" style={{marginTop:12}}>No overlapping availability found. Try editing your quiz availability.</p>}
